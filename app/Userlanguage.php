@@ -8,7 +8,9 @@ class Userlanguage extends Model
 {
    
    protected $table="user_languages";
-   
+   protected $guarded = [
+       
+];
     /**
      * Get the user that owns the Userlanguage
      *
@@ -26,6 +28,6 @@ class Userlanguage extends Model
      */
     public function language()
     {
-        return $this->belongsTo(Language::class, 'language_id ');
+        return $this->belongsTo(Language::class, 'language_id');
     }
 }

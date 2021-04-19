@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Language;
+use App\Userlanguage;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -40,9 +41,23 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        User::create([
-
+        $validated = $request->validate([
+            'name' => 'required',
+            'gender' => 'required',
+            'age'=>'required|numeric'
         ]);
+      
+        $user=User::create([
+            "name"=>$request->name,
+            "age"=>$request->age,
+            "gender"=>$request->gender,
+        ]);
+
+        foreach ($request->languages as $key => $language) {
+            Userlanguage::create(["user_id"=>$user->id,"language_id"=>$language]);
+        }
+
+        return redirect()->route('index');
     }
 
     /**
@@ -51,7 +66,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
         //
     }
@@ -62,9 +77,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        
+        $languages= Language::all();
+        
+        $user_selected_language=Userlanguage::where("user_id",$user->id)->pluck("language_id")->toArray();
+        return view("user/edit",compact('languages','user','user_selected_language'));
     }
 
     /**
@@ -74,9 +93,26 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(User $user,Request $request)
     {
-        //
+       
+        $validated = $request->validate([
+            'name' => 'required',
+            'gender' => 'required',
+            'age'=>'required|numeric'
+        ]);
+      
+       User::where("id",$user->id)->  update([
+            "name"=>$request->name,
+            "age"=>$request->age,
+            "gender"=>$request->gender,
+        ]);
+        
+        Userlanguage::where("user_id",$user->id)->delete();
+        foreach ($request->languages as $key => $language) {
+            Userlanguage::create(["user_id"=>$user->id,"language_id"=>$language]);
+        }
+        return redirect()->route('index');
     }
 
     /**
@@ -85,8 +121,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+       $user->delete();
+       return redirect()->route('index');
     }
 }

@@ -3,36 +3,57 @@
     @include('header')
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
+        <form action="{{route("update",$user->id)}}" method="post">
+            @csrf
+            @method("put")
+            <div class="form-group">
+                <label for="exampleInputEmail1">Name</label>
+                <input value="{{$user->name}}" required type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Name" name="name">
+                
+              </div>
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
+              <div class="form-group">
+                <label for="exampleInputEmail1">Age</label>
+              <input value="{{$user->age}}" required type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Age" name="age">
+                
+              </div>
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Language</label>
+               <select name="languages[]" multiple>
+                   <option value="">Please Choose languge</option>
+                   @foreach ($languages as $item)
+                   
+               <option @if (in_array($item->id,$user_selected_language))
+                       selected
+               @endif value="{{$item->id}}">{{$item->name}}</option>
+                   @endforeach
+               </select>
+                
+              </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
+
+              <div class="form-group">
+                <label  for="exampleInputEmail1">Gender</label>
+               <select  required name="gender">
+                   <option value="">Please Choose Gender</option>
+                  
+               <option  @if ($user->gender=="male")
+                   selected
+               @endif  value="male">Male</option>
+               <option   @if ($user->gender=="female")
+                selected
+            @endif   value="female">Female</option>
+                   
+               </select>
+                
+              </div>
+
+
+              
+             
+              <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
         </div>
     </body>
 </html>

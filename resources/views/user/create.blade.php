@@ -7,19 +7,19 @@
             @csrf
             <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Name" name="name">
+                <input required type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Name" name="name">
                 
               </div>
 
               <div class="form-group">
                 <label for="exampleInputEmail1">Age</label>
-                <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Age" name="age">
+                <input max="100" required type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Age" name="age">
                 
               </div>
 
               <div class="form-group">
                 <label for="exampleInputEmail1">Language</label>
-               <select name="language[]" multiple>
+               <select required  name="languages[]" multiple>
                    <option value="">Please Choose languge</option>
                    @foreach ($languages as $item)
                <option value="{{$item->id}}">{{$item->name}}</option>
