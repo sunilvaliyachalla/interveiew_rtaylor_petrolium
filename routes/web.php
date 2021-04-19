@@ -17,8 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/user-list', "UserController@index");
-Route::get('/user-create', "UserController@create");
-Route::post('/user-list', "UserController@store");
-Route::get('/user-edit', "UserController@edit");
-Route::put('/user-update', "UserController@update");
+Route::get('/user-list', "UserController@index")->name("index");
+Route::get('/user-create', "UserController@create")->name("create");
+Route::post('/user-list', "UserController@store")->name("store");
+Route::get('/user-edit', "UserController@edit")->name("edit");
+Route::put('/user-update', "UserController@update")->name("update");
+Route::delete('/user-delete', "UserController@update")->name("delete");
+Route::get('/user-show', "UserController@show")->name("show");
